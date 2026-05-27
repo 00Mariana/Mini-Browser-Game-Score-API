@@ -69,9 +69,14 @@ state.holes = [
 
 // ── Draw helpers ──────────────────────────────────────────
 function drawBackground () {
-  ctx.fillStyle = '#111'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  // YOU: draw vent/ door graphics over each hole
+  const tileSize = 40
+  for (let y = 0; y < 380; y += tileSize) {
+    for (let x = 0; x < canvas.width; x += tileSize) {
+      const isRed = ((x / tileSize) + (y / tileSize)) % 2 == 0 //this formula is what causes x and y to alternate colors like a chessboard 
+      ctx.fillStyle = isRed ? '#cc2222' : '#e8e8e8'
+      ctx.fillRect(x, y, tileSize, tileSize)
+    }
+  }
 }
 
 function drawHoles () {
