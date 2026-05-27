@@ -1,0 +1,187 @@
+// ── API ──────────────────────────────────────────────────────
+const API = '/api/scores'
+
+async function submitScore (name, score) {
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ player_name: name, score })
+  })
+  return res.json()
+}
+
+async function getLeaderboard (limit = 10) {
+  const res = await fetch(`${API}/leaderboard?limit=${limit}`)
+  return res.json()
+}
+
+async function getPlayerHistory (name) {
+  const res = await fetch(`${API}/${encodeURIComponent(name)}`)
+  return res.json()
+}
+
+// ── DOM refs ──────────────────────────────────────────────
+const canvas = document.getElementById('gameCanvas')
+const ctx = canvas.getContext('2d')
+const scoreDisplay = document.getElementById('scoreDisplay')
+const timerDisplay = document.getElementById('timerDisplay')
+const livesDisplay = document.getElementById('livesDisplay')
+const finalScore = document.getElementById('finalScore')
+const gameOverDiv = document.getElementById('gameOver')
+const loginDiv = document.getElementById('login')
+const gameDiv = document.getElementById('game')
+const nameInput = document.getElementById('nameInput')
+const startBtn = document.getElementById('startBtn')
+const playAgainBtn = document.getElementById('playAgainBtn')
+const menuBtn = document.getElementById('menuBtn')
+const historyBox = document.getElementById('historyBox')
+
+// ── Canvas sizing ─────────────────────────────────────────
+function resizeCanvas () {
+  canvas.width = 600
+  canvas.height = 500
+}
+resizeCanvas()
+
+// ── Game state ────────────────────────────────────────────
+const state = {
+  score: 0,
+  lives: 3,
+  timeLeft: 30,
+  running: false,
+  playerName: '',
+  animatronics: [],    // YOU: populate with active animatronic objects
+  holes: [],           // positions of vents/doors
+  // ... add more as needed
+}
+
+// ── Holes / Vents positions ───────────────────────────────
+// YOU: design your layout — each hole = { x, y, radius, isOpen }
+// Example:
+state.holes = [
+  { x: 150, y: 150, radius: 40 },
+  { x: 300, y: 120, radius: 40 },
+  { x: 450, y: 150, radius: 40 },
+  { x: 100, y: 320, radius: 40 },
+  { x: 300, y: 340, radius: 40 },
+  { x: 500, y: 320, radius: 40 },
+]
+
+// ── Draw helpers ──────────────────────────────────────────
+function drawBackground () {
+  ctx.fillStyle = '#111'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  // YOU: draw vent/ door graphics over each hole
+}
+
+function drawHoles () {
+  for (const h of state.holes) {
+    ctx.beginPath()
+    ctx.arc(h.x, h.y, h.radius, 0, Math.PI * 2)
+    ctx.fillStyle = '#000'
+    ctx.fill()
+    ctx.strokeStyle = '#333'
+    ctx.lineWidth = 3
+    ctx.stroke()
+  }
+}
+
+// ── Game update ───────────────────────────────────────────
+function update (dt) {
+  // YOU: decrement timer, move animatronics, check pop-up timers
+  // YOU: check if animatronic should pop up at a hole
+}
+
+// ── Game render ───────────────────────────────────────────
+function render () {
+  drawBackground()
+  drawHoles()
+  // YOU: draw each active animatronic
+  // YOU: draw score / timer on canvas if desired
+}
+
+// ── Click handler ─────────────────────────────────────────
+canvas.addEventListener('click', (e) => {
+  if (!state.running) return
+  const rect = canvas.getBoundingClientRect()
+  const mx = e.clientX - rect.left
+  const my = e.clientY - rect.top
+  // YOU: loop animatronics, check if mx/my is inside one
+  // YOU: if hit, add score, remove animatronic, play feedback
+})
+
+// ── HUD update ────────────────────────────────────────────
+function updateHUD () {
+  scoreDisplay.textContent = state.score
+  timerDisplay.textContent = Math.ceil(state.timeLeft)
+  livesDisplay.textContent = state.lives
+}
+
+// ── Game loop ─────────────────────────────────────────────
+let lastTime = 0
+function loop (timestamp) {
+  const dt = (timestamp - lastTime) / 1000
+  lastTime = timestamp
+  if (state.running) {
+    state.timeLeft -= dt
+    if (state.timeLeft <= 0 || state.lives <= 0) {
+      endGame()
+      return
+    }
+    update(dt)
+    render()
+    updateHUD()
+  }
+  requestAnimationFrame(loop)
+}
+requestAnimationFrame(loop)
+
+// ── Start / End game ──────────────────────────────────────
+function startGame () {
+  state.score = 0
+  state.lives = 3
+  state.timeLeft = 30
+  state.running = true
+  state.animatronics = []
+  gameOverDiv.style.display = 'none'
+  updateHUD()
+}
+
+function endGame () {
+  state.running = false
+  finalScore.textContent = state.score
+  gameOverDiv.style.display = 'flex'
+  submitScore(state.playerName, state.score)
+  showHistory(state.playerName)
+}
+
+// ── History display ───────────────────────────────────────
+async function showHistory (name) {
+  const scores = await getPlayerHistory(name)
+  if (scores.length === 0) {
+    historyBox.textContent = 'No previous games.'
+    return
+  }
+  const best = Math.max(...scores.map(s => s.score))
+  const last = scores[0].score
+  historyBox.innerHTML = `Best: ${best} &nbsp;|&nbsp; Last: ${last} &nbsp;|&nbsp; Games: ${scores.length}`
+}
+
+// ── UI events ─────────────────────────────────────────────
+startBtn.addEventListener('click', () => {
+  const name = nameInput.value.trim()
+  if (!name) return
+  state.playerName = name
+  loginDiv.style.display = 'none'
+  gameDiv.style.display = 'block'
+  showHistory(name)
+  startGame()
+})
+
+playAgainBtn.addEventListener('click', startGame)
+
+menuBtn.addEventListener('click', () => {
+  gameDiv.style.display = 'none'
+  gameOverDiv.style.display = 'none'
+  loginDiv.style.display = 'block'
+})

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FNAF Arcade</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="login">
+      <h1>FNAF Whack-a-Mole</h1>
+      <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20" autofocus>
+      <button id="startBtn">Start Game</button>
+      <div id="historyBox"></div>
+    </div>
+
+    <div id="game" style="display:none">
+      <div id="hud">
+        <span>Score: <strong id="scoreDisplay">0</strong></span>
+        <span>Time: <strong id="timerDisplay">30</strong>s</span>
+        <span>Lives: <strong id="livesDisplay">3</strong></span>
+      </div>
+      <canvas id="gameCanvas"></canvas>
+      <div id="gameOver" style="display:none">
+        <h2>Game Over!</h2>
+        <p>Score: <span id="finalScore">0</span></p>
+        <button id="playAgainBtn">Play Again</button>
+        <button id="menuBtn">Menu</button>
+      </div>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
