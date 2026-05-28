@@ -77,7 +77,63 @@ function drawBackground () {
       ctx.fillRect(x, y, tileSize, tileSize)
     }
   }
+  //left curtain layer 2
+  ctx.fillStyle = '#8B0000'
+  ctx.fillRect(0,0, 35, 400)
+  //curtain folds (vertical lines)
+  ctx.strokeStyle = '#5a0000'
+  ctx.lineWidth = 3
+  for (let x = 5; x < 35; x += 10){
+    ctx.beginPath()
+    ctx.moveTo (x, 0)
+    ctx.lineTo(x,400)
+    ctx.stroke ()
+  }
+
+//Right curtain (same thing but on the right side)
+ctx.fillStyle = '#8b0000'
+ctx.fillRect(canvas.width - 35, 0, 35, 400)
+ctx.strokeStyle = '#5a0000'
+ctx.lineWidth = 3
+for (let x = canvas.width - 30; x < canvas.width - 5; x += 10){
+  ctx.beginPath()
+  ctx.moveTo(x, 0)
+  ctx.lineTo(x, 400)
+  ctx.stroke()
 }
+
+//Layer 3 star lights at the top of the wall
+
+ctx.fillStyle = 'ffdd44'
+for (let x = 50; x < canvas.width - 50; x +=70){
+  //draw a star
+  const cx = x, cy = 25, outerR = 12, innerR = 5
+  ctx.beginPath()
+  for (let i = 0; i <10; i++){
+    const r = i % 2 == 0 ? outerR : innerR
+    const angle = (i * Math.PI) / 5 - Math.PI / 2
+    const px = cx + r * Math.cos(angle)
+    const py = cy + r * Math.sin(angle)
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px,py)
+  }
+  ctx.closePath()
+  ctx.fill()
+}
+
+//layer 4 wooden stage floor
+
+ctx.fillStyle = '#5c3a1e' 
+ctx.fillRect(0, 380, canvas.width, 120)
+
+//stage edge
+ctx.fillStyle = '#8B4513'
+ctx.fillRect(0, 380, canvas.wdith, 8)
+
+
+  
+}
+
+
 
 function drawHoles () {
   for (const h of state.holes) {
