@@ -51,7 +51,8 @@ const state = {
   running: false,
   playerName: '',
   animatronics: [],    // YOU: populate with active animatronic objects
-  holes: [],           // positions of vents/doors
+  holes: [], 
+            // positions of vents/doors
   // ... add more as needed
 }
 
@@ -191,16 +192,32 @@ function drawHoles () {
 
 // ── Game update ───────────────────────────────────────────
 function update (dt) {
-  // YOU: decrement timer, move animatronics, check pop-up timers
-  // YOU: check if animatronic should pop up at a hole
+  state.spawnTimer -= dt //spawn timer
+
+  if (state.spawnTimer <= 0) {
+    const holeIndex = Math.floor(Math.random() * state.holes.length)
+    const animatronic = {
+      holeIndex,
+      popUpTime: state.timeLeft,
+      duariton: 0.8 + Math.random() * 0.7,
+      hit: false
+    }
+    state.animatronics.push(animatronic)
+    state.spawnTimer = 1 + Math.random() * 2
+  }
+  // Despawn expired
+  const before = state.animatronics.length
+  state.animatronics = state.animatronics.filter(a =>
+    a.hit || (a.popUpTime - state.timeLeft) < a.duariton
+  )
+  if (state.animatronics.length < before) state.lives -= 1
 }
 
 // ── Game render ───────────────────────────────────────────
 function render () {
   drawBackground()
   drawHoles()
-  // YOU: draw each active animatronic
-  // YOU: draw score / timer on canvas if desired
+
 }
 
 // ── Click handler ─────────────────────────────────────────
