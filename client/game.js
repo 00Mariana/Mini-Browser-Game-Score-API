@@ -104,7 +104,7 @@ for (let x = canvas.width - 30; x < canvas.width - 5; x += 10){
 
 //Layer 3 star lights at the top of the wall
 
-ctx.fillStyle = 'ffdd44'
+ctx.fillStyle = '#ffdd44'
 for (let x = 50; x < canvas.width - 50; x +=70){
   //draw a star
   const cx = x, cy = 25, outerR = 12, innerR = 5
@@ -127,7 +127,49 @@ ctx.fillRect(0, 380, canvas.width, 120)
 
 //stage edge
 ctx.fillStyle = '#8B4513'
-ctx.fillRect(0, 380, canvas.wdith, 8)
+ctx.fillRect(0, 380, canvas.width, 8)
+
+//floor plank lines 
+
+ctx.strokeStyle = '#3d2510'
+ctx.lineWidth = 2
+for (let y = 400; y < 500; y += 25){
+  ctx.beginPath()
+  ctx.moveTo(0, y)
+  ctx.lineTo(canvas.width, y)
+  ctx.stroke()
+}
+for (let x = 0; x < canvas.width; x += 80){
+  ctx.beginPath()
+  ctx.moveTo(x, 388)
+  ctx.lineTo(x, 500)
+  ctx.stroke()
+}
+
+//layer 5 cage door openings 
+
+for (const h of state.holes){
+  //dark opening
+  ctx.fillStyle = '#000'
+  ctx.beginPath ()
+  ctx.arc(h.x, h.y, h.radius, 0, Math.PI *2)
+  ctx.fill ()
+  //metallic rim
+  ctx.strokeStyle = '#666'
+  ctx.lineWidth = 4
+  ctx.beginPath ()
+  ctx.arc(h.x, h.y, h.radius, 0, Math.PI *2)
+  ctx.stroke()
+  //cross bars cage door
+  ctx.strokeStyle = '#444'
+  ctx.lineWidth = 3
+  ctx.beginPath ()
+  ctx.moveTo(h.x -h.radius, h.y)
+  ctx.lineTo(h.x + h.radius, h.y)
+  ctx.moveTo(h.x, h.y - h.radius)
+  ctx.lineTo(h.x, h.y + h.radius)
+  ctx.stroke()
+}
 
 
   
