@@ -251,8 +251,22 @@ canvas.addEventListener('click', (e) => {
   const rect = canvas.getBoundingClientRect()
   const mx = e.clientX - rect.left
   const my = e.clientY - rect.top
-  // YOU: loop animatronics, check if mx/my is inside one
-  // YOU: if hit, add score, remove animatronic, play feedback
+  
+  for(let i = state.animatronics.length - 1; i >= 0; i--){
+    const a = state.animatronics[i]
+    if (a.hit) continue
+    const hole = state.holes[a.holeIndex]
+    const dx = mx - hole.x
+    const dy = my - (hole.y - 10) //same offset as where it is drawn
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    if (dist < 30){
+      a.hit = true
+      state.score += 10
+      break //only hit one per click 
+
+    }
+
+  }
 })
 
 // ── HUD update ────────────────────────────────────────────
