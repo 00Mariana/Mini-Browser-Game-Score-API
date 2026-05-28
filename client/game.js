@@ -199,7 +199,7 @@ function update (dt) {
     const animatronic = {
       holeIndex,
       popUpTime: state.timeLeft,
-      duariton: 0.8 + Math.random() * 0.7,
+      duration: 0.8 + Math.random() * 0.7,
       hit: false
     }
     state.animatronics.push(animatronic)
@@ -208,7 +208,7 @@ function update (dt) {
   // Despawn expired
   const before = state.animatronics.length
   state.animatronics = state.animatronics.filter(a =>
-    a.hit || (a.popUpTime - state.timeLeft) < a.duariton
+    a.hit || (a.popUpTime - state.timeLeft) < a.duration
   )
   if (state.animatronics.length < before) state.lives -= 1
 }
@@ -225,7 +225,7 @@ function render () {
     // body (rounded head peeking up)
     ctx.fillStyle = '#8B4513'
     ctx.beginPath()
-    ctx.arc(hole.x - 10, hole.y - 10, 30, 0, Math.PI * 2)
+    ctx.arc(hole.x, hole.y - 10, 30, 0, Math.PI * 2)
     ctx.fill()
 
     // eyes glowing white
