@@ -217,8 +217,33 @@ function update (dt) {
 function render () {
   drawBackground()
   drawHoles()
+  // draw each active animatronic
+  for (const a of state.animatronics) {
+    if (a.hit) continue // skip hit ones
+    const hole = state.holes[a.holeIndex] // draw something at (hole.x, hole.y)
 
+    // body (rounded head peeking up)
+    ctx.fillStyle = '#8B4513'
+    ctx.beginPath()
+    ctx.arc(hole.x - 10, hole.y - 10, 30, 0, Math.PI * 2)
+    ctx.fill()
+
+    // eyes glowing white
+    ctx.fillStyle = '#FFF'
+    ctx.beginPath()
+    ctx.arc(hole.x - 10, hole.y - 15, 5, 0, Math.PI * 2)
+    ctx.arc(hole.x + 10, hole.y - 15, 5, 0, Math.PI * 2)
+    ctx.fill()
+
+    // pupils red dots
+    ctx.fillStyle = '#ff0000'
+    ctx.beginPath()
+    ctx.arc(hole.x - 10, hole.y - 15, 2, 0, Math.PI * 2)
+    ctx.arc(hole.x + 10, hole.y - 15, 2, 0, Math.PI * 2)
+    ctx.fill()
+  }
 }
+  
 
 // ── Click handler ─────────────────────────────────────────
 canvas.addEventListener('click', (e) => {
