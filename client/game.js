@@ -69,6 +69,47 @@ state.holes = [
   { x: 500, y: 320, radius: 40 },
 ]
 
+//Characters
+
+const CHARACTERS = [
+  {
+    name: 'Freddy Fazbear',
+    bodyColor: '#8B4513',
+    snoutColor: '#A0724A',
+    earType: 'round',
+    hasHat: true,
+    eyesStyle: 'normal',
+    mouthStyle: 'stitched',
+  },
+  {
+    name: 'Bonnie',
+    bodyColor: '#6A0DAD',
+    snoutColor:'#9B5DE5',
+    earType: 'tall',
+    hasHat: false,
+    eyesStyle: 'angry',
+    mouthStyle: 'straight',
+  },
+  {
+    name: 'Chica',
+    bodyColor:'#FFD700',
+    snoutColor: '#FFEB3B',
+    earType:'tuft',
+    hasHat: false,
+    eyesStyle:'big',
+    mouthStyle:'beak',
+  },
+  {
+    name: 'Foxy',
+    bodyColor: '#B22222',
+    snoutColor:'#DC143C',
+    earType:'pointed',
+    hasHat: false,
+    eyesStyle: 'eyepatch',
+    mouthStyle: 'zigzag',
+  },
+]
+
 // ── Draw helpers ──────────────────────────────────────────
 function drawBackground () {
   const tileSize = 40
