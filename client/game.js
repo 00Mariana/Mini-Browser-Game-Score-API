@@ -170,25 +170,9 @@ for (const h of state.holes){
   ctx.moveTo(h.x, h.y - h.radius)
   ctx.lineTo(h.x, h.y + h.radius)
   ctx.stroke()
+} 
 }
 
-
-  
-}
-
-
-
-function drawHoles () {
-  for (const h of state.holes) {
-    ctx.beginPath()
-    ctx.arc(h.x, h.y, h.radius, 0, Math.PI * 2)
-    ctx.fillStyle = '#000'
-    ctx.fill()
-    ctx.strokeStyle = '#333'
-    ctx.lineWidth = 3
-    ctx.stroke()
-  }
-}
 
 // ── Game update ───────────────────────────────────────────
 function update (dt) {
@@ -216,7 +200,6 @@ function update (dt) {
 // ── Game render ───────────────────────────────────────────
 function render () {
   drawBackground()
-  drawHoles()
   // draw each active animatronic
   for (const a of state.animatronics) {
     if (a.hit) continue // skip hit ones
