@@ -50,6 +50,7 @@ const state = {
   timeLeft: 30,
   running: false,
   playerName: '',
+  spawnTimer: 0,
   animatronics: [],    // YOU: populate with active animatronic objects
   holes: [], 
             // positions of vents/doors
@@ -179,15 +180,21 @@ function update (dt) {
   state.spawnTimer -= dt //spawn timer
 
   if (state.spawnTimer <= 0) {
+    const progress = 1 - (state.timeLeft / 30)
+    const spawnMin = 1.0 + (0.15 - 1.0) * progress
+    const spawnRand = 2.0 + (0.2 - 2.0) * progress
+    const durMin = 0.8 + (0.35 - 0.8) * progress
+    const durRand = 0.7 + (0.35 - 0.7) * progress
+
     const holeIndex = Math.floor(Math.random() * state.holes.length)
     const animatronic = {
       holeIndex,
       popUpTime: state.timeLeft,
-      duration: 0.8 + Math.random() * 0.7,
+      duration: durMin + Math.random() * durRand,
       hit: false
     }
     state.animatronics.push(animatronic)
-    state.spawnTimer = 1 + Math.random() * 2
+    state.spawnTimer = spawnMin + Math.random() * spawnRand
   }
   // Despawn expired
   const before = state.animatronics.length
