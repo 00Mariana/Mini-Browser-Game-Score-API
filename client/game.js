@@ -225,7 +225,7 @@ function drawAnimatronic (x,y, char){
   //left eye
   ctx.beginPath()
   ctx.fillStyle = '#FFF'
-  ctx.arc(x + 10, y - 5, 5,0, Math.Pi *2)
+  ctx.arc(x - 10, y - 5, 5, 0, Math.PI * 2)
   ctx.fill()
 //right eye
   ctx.beginPath()
@@ -236,7 +236,12 @@ function drawAnimatronic (x,y, char){
   ctx.fillStyle = '#ff0000'
   ctx.arc(x - 10, y - 5, 2, 0, Math.PI * 2)
   ctx.fill()
-} 
+
+  // right pupil
+  ctx.beginPath()
+  ctx.arc(x + 10, y - 5, 2, 0, Math.PI * 2)
+  ctx.fill()
+}
 
 
 // ── Game update ───────────────────────────────────────────

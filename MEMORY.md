@@ -68,8 +68,30 @@ All core game mechanics work:
 - ✅ Miss = expired animatronic costs a life
 - ✅ Game ends at 0 lives or 30s
 
-### Still pending
-- `drawHoles()` is redundant (cage doors in `drawBackground()`) — harmless cleanup
-- No difficulty scaling yet (spawn rate stays constant)
-- Animatronic art is basic circles — polish for "cool asf" look
+## Character Rendering — In Progress 🔧
+
+### Done
+- `CHARACTERS` array defined (lines 74-111) with 4 animatronics:
+  - Freddy Fazbear: brown, round ears, hat, normal eyes, stitched mouth
+  - Bonnie: purple, tall ears, angry eyes, straight mouth
+  - Chica: yellow, tuft ears, big eyes, beak mouth
+  - Foxy: red, pointed ears, eyepatch, zigzag mouth
+- `characterIndex` added to spawn object in `update()` (line 259)
+- `render()` updated to pass `char` to `drawAnimatronic()` (line 280)
+- `drawAnimatronic(x, y, char)` function created (line 218)
+- Step 1 complete: head circle using `char.bodyColor` + white eyes + red pupils
+
+### Bugs fixed this session
+- `Math.Pi` → `Math.PI` (wrong capitalization)
+- Left eye x position `x + 10` → `x - 10` (both eyes were on right side)
+- Added missing right pupil
+
+### Still pending for `drawAnimatronic`
+- Snout (oval using `char.snoutColor`)
+- Ears (if/else on `char.earType`: round, tall, tuft, pointed)
+- Mouth (if/else on `char.mouthStyle`: stitched, straight, beak, zigzag)
+- Hat (if `char.hasHat` — only Freddy)
+
+### Other pending items
 - No sound effects or visual feedback on hit
+- Leaderboard display in UI (API exists but only history is shown)
