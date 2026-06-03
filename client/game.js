@@ -215,6 +215,29 @@ for (const h of state.holes){
 } 
 }
 
+function drawAnimatronic (x,y, char){
+  // head + eyes + pupils
+  ctx.beginPath ()
+  ctx.fillStyle = char.bodyColor
+  ctx.arc(x, y, 30, 0, Math.PI *2)
+  ctx.fill()
+
+  //left eye
+  ctx.beginPath()
+  ctx.fillStyle = '#FFF'
+  ctx.arc(x + 10, y - 5, 5,0, Math.Pi *2)
+  ctx.fill()
+//right eye
+  ctx.beginPath()
+  ctx.arc(x + 10, y - 5, 5,0, Math.PI *2)
+  ctx.fill()
+  //left pupil
+  ctx.beginPath()
+  ctx.fillStyle = '#ff0000'
+  ctx.arc(x - 10, y - 5, 2, 0, Math.PI * 2)
+  ctx.fill()
+} 
+
 
 // ── Game update ───────────────────────────────────────────
 function update (dt) {
@@ -232,7 +255,8 @@ function update (dt) {
       holeIndex,
       popUpTime: state.timeLeft,
       duration: durMin + Math.random() * durRand,
-      hit: false
+      hit: false,
+      characterIndex: Math.floor(Math.random() * CHARACTERS.length)
     }
     state.animatronics.push(animatronic)
     state.spawnTimer = spawnMin + Math.random() * spawnRand
@@ -251,28 +275,10 @@ function render () {
   // draw each active animatronic
   for (const a of state.animatronics) {
     if (a.hit) continue // skip hit ones
-    const hole = state.holes[a.holeIndex] // draw something at (hole.x, hole.y)
-
-    // body (rounded head peeking up)
-    ctx.fillStyle = '#8B4513'
-    ctx.beginPath()
-    ctx.arc(hole.x, hole.y - 10, 30, 0, Math.PI * 2)
-    ctx.fill()
-
-    // eyes glowing white
-    ctx.fillStyle = '#FFF'
-    ctx.beginPath()
-    ctx.arc(hole.x - 10, hole.y - 15, 5, 0, Math.PI * 2)
-    ctx.arc(hole.x + 10, hole.y - 15, 5, 0, Math.PI * 2)
-    ctx.fill()
-
-    // pupils red dots
-    ctx.fillStyle = '#ff0000'
-    ctx.beginPath()
-    ctx.arc(hole.x - 10, hole.y - 15, 2, 0, Math.PI * 2)
-    ctx.arc(hole.x + 10, hole.y - 15, 2, 0, Math.PI * 2)
-    ctx.fill()
-  }
+    const hole = state.holes[a.holeIndex]
+    const char = CHARACTERS[a.characterIndex]
+    drawAnimatronic(hole.x, hole.y - 10, char)
+}
 }
   
 
